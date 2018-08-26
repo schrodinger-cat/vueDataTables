@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { httpGet } from './utils.js';
+import axios from 'axios';
 
 Vue.use(Vuex);
 
@@ -50,16 +50,16 @@ export default new Vuex.Store({
     addNewTable: context => {
       context.commit('addNewTableInit');
 
-      httpGet(
-        'http://www.filltext.com/?rows=32&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&adress={addressObject}&description={lorem|32};',
-      ).then(
-        response => {
-          context.commit('addNewTableSuccess', JSON.parse(response));
-        },
-        error => {
-          context.commit('addNewTableError', error);
-        },
-      );
+      axios
+        .get(
+          'http://www.filltext.com/?rows=32&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&adress={addressObject}&description={lorem|32};',
+        )
+        .then(response => {
+          context.commit('addNewTableSuccess', response.data);
+        })
+        .catch(error => {
+          return Promise.reject(context.commit('addNewTableError', error));
+        });
     },
   },
 });
