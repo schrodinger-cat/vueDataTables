@@ -19,26 +19,16 @@ export default new Vuex.Store({
     getTablesList: state => state.tables,
   },
   mutations: {
-    addNewTableInit: state => {
-      let copy = Object.assign({}, state.tablesBlueprint);
-      let tableIndex = state.tables.push(copy) - 1;
-
-      state.tables[tableIndex].isPending = true;
-    },
     addNewTableSuccess: (state, payload) => {
-      state.tables[state.tables.length - 1].values = payload;
-      state.tables[state.tables.length - 1].isPending = false;
-      state.tables[state.tables.length - 1].rows = Object.keys(payload[0]);
+      let copy = Object.assign({}, state.tablesBlueprint);
+      let index = state.tables.push(copy) - 1;
+
+      state.tables[index].values = payload;
+      state.tables[index].isPending = false;
+      state.tables[index].rows = Object.keys(payload[0]);
     },
     addNewTableError: (state, payload) => {
       state.tables[state.tables.length - 1].error = payload;
-    },
-
-    /**
-     * Смена страниц в текущей таблице
-     */
-    setCurrentPage: (state, payload) => {
-      state.tables[payload.index].page = payload.page;
     },
   },
   actions: {
@@ -48,8 +38,6 @@ export default new Vuex.Store({
      * на обработку в мутацию
      */
     addNewTable: context => {
-      context.commit('addNewTableInit');
-
       axios
         .get(
           'http://www.filltext.com/?rows=32&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&adress={addressObject}&description={lorem|32};',
