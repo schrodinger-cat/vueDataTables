@@ -79,7 +79,6 @@ export default {
 
   mounted() {
     let copy = Object.assign({}, this.table);
-    console.log(copy);
 
     this.tableData = copy;
   },
