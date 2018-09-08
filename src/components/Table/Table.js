@@ -26,6 +26,9 @@ export default {
         values: ['asc', 'desc', 'normal'],
         valuesSymbols: ['⇈', '⇊', ''],
       },
+      add: {
+        col: null,
+      },
     };
   },
 
@@ -39,6 +42,29 @@ export default {
   },
 
   methods: {
+    /**
+     * В задании не было указано, что делать с вложенными объектами, поэтому все элементы объектов
+     * я вывел через запятую
+     * @param {*} value - значение поля
+     */
+    checkTypeOfValue: function(value) {
+      return typeof value == 'object'
+        ? Object.keys(value)
+            .map(e => value[e])
+            .join(', ')
+        : value;
+    },
+
+    /**
+     * Выставим активное состояние кнопки в пагинации
+     * @param {*} page - номер страницы
+     */
+    checkActivePage: function(page) {
+      if (page == this.tableData.page) {
+        return '_active';
+      }
+    },
+
     /**
      * Отсортируем список в зависимости от текущей страницы
      */
@@ -92,13 +118,21 @@ export default {
         return val.includes(search.search);
       });
 
-      //TODO: возможно тут потребуется Object.assign при редактировании полей      
+      //TODO: возможно тут потребуется Object.assign при редактировании полей
       this.tableData.values = findedValues;
     },
 
     clearSearch: function() {
       this.tableData.values = this.table.values;
     },
+
+    /**
+     * Добавление пустой строки в таблицу
+     * @param {*} column - индекс строки после которой будет вставленна пустая строка
+     */
+    addColumn: function(column) {
+
+    }
   },
 
   mounted() {
