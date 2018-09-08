@@ -1,5 +1,6 @@
 <template>
-  <div class="table__elem">
+  <div class="table">
+    <table-filter :rows="tableData.rows" @search="handleSearch" @clear="clearSearch"></table-filter>
     <table>
       <thead>
         <th v-for="(row, rowIndex) in tableData.rows" :key="rowIndex" @click.prevent="handleSort(row)">
@@ -10,7 +11,7 @@
         </th>
       </thead>
       <tbody>
-        <tr v-for="(valueRow, valueRowIndex) in getTableValuesPerPage(tableData.values, table.page)" :key="valueRowIndex">
+        <tr v-for="(valueRow, valueRowIndex) in getTableValuesPerPage(tableData.values, tableData.page)" :key="valueRowIndex">
           <td v-for="(value, valueIndex) in valueRow" :key="valueIndex">
             {{ value }}
           </td>
