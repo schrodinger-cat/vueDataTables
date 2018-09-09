@@ -41,6 +41,7 @@
               v-if="checkIfColumnEditable(valueRowIndex, valueIndex)"
               v-model="edit.value"
               @keyup.esc="cancelEdit"
+              @blur.prevent="saveEdit(valueRowIndex, valueIndex)"
               @keyup.enter.prevent="saveEdit(valueRowIndex, valueIndex)"
             >
             <template v-else>

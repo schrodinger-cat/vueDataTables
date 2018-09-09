@@ -31,6 +31,7 @@ export default {
         row: null,
         value: null,
       },
+      editStatus: false,
     };
   },
 
@@ -125,7 +126,6 @@ export default {
         return val.includes(search.search);
       });
 
-      //TODO: возможно тут потребуется Object.assign при редактировании полей
       this.tableData.values = findedValues;
     },
 
@@ -171,6 +171,7 @@ export default {
       this.edit.row = row;
       this.edit.column = column;
       this.edit.value = this.table.values[row][column];
+      this.editStatus = true;
     },
 
     /**
@@ -180,6 +181,8 @@ export default {
       for (let elem in this.edit) {
         this.edit[elem] = null;
       }
+
+      this.editStatus = false;
     },
 
     /**
@@ -201,11 +204,15 @@ export default {
         column: column,
         newValue: this.edit.value,
       };
-
-      console.log(edited);
-
-      this.saveNewValue(edited);
-      this.clearEdit();
+      
+      /**
+       * look like костыль, что бы блюр не запускался после того как выстрелил keyup.enter и скрыл инпут
+       * но лучшего решения на данный момент я придумать не могу
+       */ 
+      if(this.editStatus) {
+        this.saveNewValue(edited);
+        this.clearEdit();
+      }
     },
   },
 

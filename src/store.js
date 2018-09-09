@@ -40,7 +40,6 @@ export default new Vuex.Store({
     },
 
     saveNewValue: (state, payload) => {
-      console.log(payload);
       state.tables[payload.table].values[payload.row][payload.column] = payload.newValue;
     }
   },
