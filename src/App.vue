@@ -5,6 +5,7 @@
     <table-component 
       v-for="(table, index) in tablesList"
       :table="table"
+      :tableIndex="index"
       :key="index"
     ></table-component>
   </div>

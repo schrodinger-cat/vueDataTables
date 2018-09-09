@@ -9,7 +9,7 @@ export default {
     TableFilter,
   },
 
-  props: ['table'],
+  props: ['table', 'tableIndex'],
 
   data: () => {
     return {
@@ -26,8 +26,10 @@ export default {
         values: ['asc', 'desc', 'normal'],
         valuesSymbols: ['⇈', '⇊', ''],
       },
-      add: {
-        col: null,
+      edit: {
+        column: null,
+        row: null,
+        value: null,
       },
     };
   },
@@ -42,6 +44,11 @@ export default {
   },
 
   methods: {
+    ...mapMutations({
+      addNewColumn: 'addNewColumn',
+      saveNewValue: 'saveNewValue',
+    }),
+
     /**
      * В задании не было указано, что делать с вложенными объектами, поэтому все элементы объектов
      * я вывел через запятую
@@ -131,8 +138,75 @@ export default {
      * @param {*} column - индекс строки после которой будет вставленна пустая строка
      */
     addColumn: function(column) {
+      let blankElement = {};
 
-    }
+      this.table.rows.forEach(row => {
+        blankElement[row] = '';
+      });
+
+      let indexes = {
+        table: this.tableIndex,
+        column: column,
+        element: blankElement,
+      };
+
+      this.addNewColumn(indexes);
+    },
+
+    /**
+     * Проверка на то, редактируется ли элемент
+     * @param {*} row - индекс колонки
+     * @param {*} column - индекс редактируемого элемента
+     */
+    checkIfColumnEditable: function(row, column) {
+      return this.edit.row == row && this.edit.column == column;
+    },
+
+    /**
+     * Откроем форму редактирования поля
+     * @param {*} row - индекс колонки
+     * @param {*} column - индекс редактируемого элемента
+     */
+    openEdit: function(row, column) {
+      this.edit.row = row;
+      this.edit.column = column;
+      this.edit.value = this.table.values[row][column];
+    },
+
+    /**
+     * Очистка объекта редактирования
+     */
+    clearEdit: function() {
+      for (let elem in this.edit) {
+        this.edit[elem] = null;
+      }
+    },
+
+    /**
+     * Отмена редактирования
+     */
+    cancelEdit: function() {
+      this.clearEdit();
+    },
+
+    /**
+     * Сохранение отредактированного поля
+     * @param {*} row - индекс колонки
+     * @param {*} column - индекс редактируемого элемента
+     */
+    saveEdit: function(row, column) {
+      let edited = {
+        table: this.tableIndex,
+        row: row,
+        column: column,
+        newValue: this.edit.value,
+      };
+
+      console.log(edited);
+
+      this.saveNewValue(edited);
+      this.clearEdit();
+    },
   },
 
   mounted() {

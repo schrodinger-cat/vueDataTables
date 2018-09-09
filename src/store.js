@@ -30,6 +30,19 @@ export default new Vuex.Store({
     addNewTableError: (state, payload) => {
       state.tables[state.tables.length - 1].error = payload;
     },
+
+    /**
+     * Добавим новую строку в таблицу
+     * @param {*} payload - индексы строки, таблицы и пустой элемент {table: .., column: .., element}
+     */
+    addNewColumn: (state, payload) => {
+      state.tables[payload.table].values.splice(payload.column + 1, 0, payload.element);
+    },
+
+    saveNewValue: (state, payload) => {
+      console.log(payload);
+      state.tables[payload.table].values[payload.row][payload.column] = payload.newValue;
+    }
   },
   actions: {
     /**
