@@ -34,15 +34,15 @@
             v-for="(value, valueIndex) in valueRow" 
             :key="valueIndex"
             class="table__td"
-            @dblclick="openEdit(valueRowIndex, valueIndex)"
+            @dblclick="openEdit(valueRowIndex, valueIndex, valueRow)"
           >
             <input 
               type="text" 
               v-if="checkIfColumnEditable(valueRowIndex, valueIndex)"
               v-model="edit.value"
               @keyup.esc="cancelEdit"
-              @blur.prevent="saveEdit(valueRowIndex, valueIndex)"
-              @keyup.enter.prevent="saveEdit(valueRowIndex, valueIndex)"
+              @blur.prevent="saveEdit(valueRowIndex, valueIndex, valueRow)"
+              @keyup.enter.prevent="saveEdit(valueRowIndex, valueIndex, valueRow)"
             >
             <template v-else>
               {{ checkTypeOfValue(value) }}

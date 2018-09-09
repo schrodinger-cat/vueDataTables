@@ -25,6 +25,7 @@ export default {
         field: null,
         values: ['asc', 'desc', 'normal'],
         valuesSymbols: ['⇈', '⇊', ''],
+        initialState: [],
       },
       edit: {
         column: null,
@@ -32,6 +33,7 @@ export default {
         value: null,
       },
       editStatus: false,
+      isFiltered: false,
     };
   },
 
@@ -105,6 +107,7 @@ export default {
      * @param {*} index -  название поля по которому происходит сортировка
      */
     handleSort: function(index) {
+      
       if (this.sorting.field != index) {
         this.sorting.field = index;
         this.sorting.direction = 'asc';
@@ -123,6 +126,8 @@ export default {
     },
 
     handleSearch: function(search) {
+      this.isFiltered = true;
+
       let findedValues = this.table.values.filter(x => {
         let val = x[search.row].toString();
         return val.includes(search.search);
@@ -133,6 +138,7 @@ export default {
 
     clearSearch: function() {
       this.tableData.values = this.table.values;
+      this.isFiltered = false;
     },
 
     /**
@@ -170,10 +176,13 @@ export default {
      * @param {*} row - индекс колонки
      * @param {*} column - индекс редактируемого элемента
      */
-    openEdit: function(row, column) {
+    openEdit: function(row, column, rowObj) {
+      //Если фильтруем - найдём элемент в исходном массиве
+      let initialRow = this.isFiltered ? this.table.values.indexOf(rowObj) : row;
+
       this.edit.row = row;
       this.edit.column = column;
-      this.edit.value = this.table.values[row][column];
+      this.edit.value = this.table.values[initialRow][column];
       this.editStatus = true;
     },
 
@@ -200,7 +209,12 @@ export default {
      * @param {*} row - индекс колонки
      * @param {*} column - индекс редактируемого элемента
      */
-    saveEdit: function(row, column) {
+    saveEdit: function(row, column, rowObj) {
+      //Если фильтруем - найдём элемент в исходном массиве
+      if(this.isFiltered) {
+        row = this.table.values.indexOf(rowObj);
+      }
+
       let edited = {
         table: this.tableIndex,
         row: row,
