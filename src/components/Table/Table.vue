@@ -52,17 +52,25 @@
       </tbody>
     </table>
 
-    <div class="table__pagination">
-      <div 
-        class="table__page" 
-        v-for="page in getPagesCount(tableData.values)" 
-        :key="page"
-        :class="checkActivePage(page)"
-        @click.prevent="handleSetPage(page)"
-      >
-        {{ page }}
+    <div class="table__bottom">
+      <div class="table__pagination">
+        <div 
+          class="table__page" 
+          v-for="page in getPagesCount(tableData.values)" 
+          :key="page"
+          :class="checkActivePage(page)"
+          @click.prevent="handleSetPage(page)"
+        >
+          {{ page }}
+        </div>
+      </div>
+
+      <div class="table__controls">
+        <button>Очистить таблицу</button>
+        <button>Удалить таблицу</button>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -120,10 +128,6 @@
     font-size: 16px;
   }
 
-  &__pagination {
-    padding-top: 20px;
-  }
-
   &__page {
     display: inline-block;
     margin-right: 10px;
@@ -136,6 +140,12 @@
       border: 1px solid #4286f4;
       border-radius: 50%;
     }
+  }
+
+  &__bottom {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>

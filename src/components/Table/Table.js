@@ -148,6 +148,7 @@ export default {
         table: this.tableIndex,
         column: column,
         element: blankElement,
+        page: this.tableData.page
       };
 
       this.addNewColumn(indexes);

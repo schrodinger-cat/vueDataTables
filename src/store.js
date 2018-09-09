@@ -36,12 +36,13 @@ export default new Vuex.Store({
      * @param {*} payload - индексы строки, таблицы и пустой элемент {table: .., column: .., element}
      */
     addNewColumn: (state, payload) => {
-      state.tables[payload.table].values.splice(payload.column + 1, 0, payload.element);
+      let index = payload.column + 1 + ((payload.page - 1) * 10);
+      state.tables[payload.table].values.splice(index, 0, payload.element);
     },
 
     saveNewValue: (state, payload) => {
       state.tables[payload.table].values[payload.row][payload.column] = payload.newValue;
-    }
+    },
   },
   actions: {
     /**
