@@ -48,6 +48,8 @@ export default {
     ...mapMutations({
       addNewColumn: 'addNewColumn',
       saveNewValue: 'saveNewValue',
+      cleanTable: 'cleanTable',
+      deleteTable: 'deleteTable',
     }),
 
     /**
@@ -214,6 +216,18 @@ export default {
         this.saveNewValue(edited);
         this.clearEdit();
       }
+    },
+
+    /**
+     * Очистка таблицы
+     */
+    handleCleanTable: function() {
+      this.tableData.values = [];
+      this.cleanTable(this.tableIndex);
+    },
+
+    handleDeleteTable: function() {
+      this.deleteTable(this.tableIndex);
     },
   },
 

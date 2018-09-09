@@ -66,8 +66,8 @@
       </div>
 
       <div class="table__controls">
-        <button>Очистить таблицу</button>
-        <button>Удалить таблицу</button>
+        <button @click.prevent="handleCleanTable">Очистить таблицу</button>
+        <button @click.prevent="handleDeleteTable">Удалить таблицу</button>
       </div>
     </div>
 

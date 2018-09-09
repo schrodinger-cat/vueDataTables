@@ -33,16 +33,36 @@ export default new Vuex.Store({
 
     /**
      * Добавим новую строку в таблицу
-     * @param {*} payload - индексы строки, таблицы и пустой элемент {table: .., column: .., element}
+     * @param {*} payload - индексы строки, таблицы, пустой элемент и номер страницы
      */
     addNewColumn: (state, payload) => {
       let index = payload.column + 1 + ((payload.page - 1) * 10);
       state.tables[payload.table].values.splice(index, 0, payload.element);
     },
 
+    /**
+     * Сохраним изменненое значение
+     * @param {*} payload - индекс таблицы, название столбца, индекс строки, значение поля
+     */
     saveNewValue: (state, payload) => {
       state.tables[payload.table].values[payload.row][payload.column] = payload.newValue;
     },
+
+    /**
+     * Очистка таблицы
+     * @param {*} payload - индекс таблицы
+     */
+    cleanTable: (state, payload) => {
+      state.tables[payload].values = [];
+    },
+
+    /**
+     * Удаление таблицы
+     * @param {*} payload - индекс таблицы
+     */
+    deleteTable: (state, payload) => {
+      state.tables.splice(payload, 1);
+    }
   },
   actions: {
     /**
