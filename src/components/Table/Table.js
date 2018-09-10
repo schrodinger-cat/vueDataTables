@@ -49,6 +49,10 @@ export default {
     rowDirection: function() {
       return this.sorting.valuesSymbols[this.sorting.values.indexOf(this.sorting.direction)];
     },
+
+    setCustomTh: function() {
+      return this.table.meta[0] ? this.table.meta[0] : '';
+    }
   },
 
   methods: {
@@ -58,6 +62,14 @@ export default {
       cleanTable: 'cleanTable',
       deleteTable: 'deleteTable',
     }),
+
+    setCustomTd: function(index) {
+      if(index % 2 == 0) {
+        return this.table.meta[1] ? this.table.meta[1] : '';
+      } else {
+        return this.table.meta[2] ? this.table.meta[2] : '';
+      }
+    },
 
     /**
      * В задании не было указано, что делать с вложенными объектами, поэтому все элементы объектов

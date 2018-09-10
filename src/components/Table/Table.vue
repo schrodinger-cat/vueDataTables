@@ -22,12 +22,16 @@
 
     <table class="table__elem">
       <thead>
-        <th class="table__th _add"></th>
+        <th 
+          class="table__th _add"
+          :class="setCustomTh"
+        ></th>
         <th 
           v-for="(row, rowIndex) in tableData.rows" 
           :key="rowIndex" 
           @click.prevent="handleSort(row)"
           class="table__th"
+          :class="setCustomTh"
         >
           {{ row }}
           <span v-if="sorting.field == row">
@@ -41,7 +45,7 @@
           :key="valueRowIndex"
           class="table__tr"
         >
-          <td class="table__td">
+          <td class="table__td" :class="setCustomTd(valueRow)">
             <a href="#" class="table__add-col" @click.prevent="addColumn(valueRowIndex)">+</a>
           </td>
           <td 
@@ -49,6 +53,7 @@
             :key="valueIndex"
             class="table__td"
             @dblclick="openEdit(valueRowIndex, valueIndex, valueRow)"
+            :class="setCustomTd(valueRow)"
           >
             <input 
               type="text" 
@@ -166,5 +171,17 @@
     display: flex;
     justify-content: space-between;
   }
+}
+
+.custom-th {
+  background-color: #94b1e0;
+}
+
+.td-even {
+  background-color: #ccc;
+}
+
+.td-odd {
+  background-color: #99857a;
 }
 </style>

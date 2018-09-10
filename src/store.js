@@ -12,6 +12,7 @@ export default new Vuex.Store({
       errors: [],
       page: 1,
       rows: [],
+      meta: [],
     },
     tables: [],
   },
@@ -21,11 +22,12 @@ export default new Vuex.Store({
   mutations: {
     addNewTableSuccess: (state, payload) => {
       let copy = Object.assign({}, state.tablesBlueprint);
-      let index = state.tables.push(copy) - 1;
 
-      state.tables[index].values = payload;
-      state.tables[index].isPending = false;
-      state.tables[index].rows = Object.keys(payload[0]);
+      copy.values = payload;
+      copy.isPending = false;
+      copy.rows = Object.keys(payload[0]);
+
+      state.tables.push(copy)
     },
     addNewTableError: (state, payload) => {
       state.tables[state.tables.length - 1].error = payload;
@@ -69,6 +71,32 @@ export default new Vuex.Store({
      */
     restoreTable: (state, payload) => {
       state.tables[payload.table].values = JSON.parse(payload.values);
+    },
+
+    /**
+     * Добавление пустой таблицы
+     */
+    addEmptyTable: (state, payload) => {
+      let rows = payload.fields.replace(/\s/g, '').split(',');
+
+      let emptyValues = [];
+
+      for (let i = 0; i < Number(payload.cols); i++) {
+        let elem = {};
+
+        rows.forEach(row => {
+          elem[row] = '';
+        });
+
+        emptyValues.push(elem);
+      }
+
+      let copy = Object.assign({}, state.tablesBlueprint);
+      copy.rows = rows;
+      copy.values = emptyValues;
+      copy.meta = payload.meta ? payload.meta.replace(/\s/g, '').split(',') : [];
+
+      state.tables.push(copy);
     },
   },
   actions: {

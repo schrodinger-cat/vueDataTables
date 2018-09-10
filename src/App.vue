@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <button @click.prevent="handleAddNewTable">Добавить таблицу</button>
+    <button @click.prevent="setPopupState(true)">Добавить таблицу</button>
+
+    <popup v-if="popupState" @close="setPopupState(false)">
+      <add-table @created="setPopupState(false)"></add-table>
+    </popup>
     
     <table-component 
       v-for="(table, index) in tablesList"
@@ -13,13 +17,24 @@
 
 <script>
 import TableComponent from './components/Table/Table.vue';
-import { mapGetters, mapActions } from 'vuex';
+import Popup from './components/Popup/Popup.vue';
+import AddTable from './components/AddTable/AddTable.vue';
+
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'app',
 
   components: {
     TableComponent,
+    Popup,
+    AddTable,
+  },
+
+  data: () => {
+    return {
+      popupState: false,
+    };
   },
 
   computed: {
@@ -29,15 +44,9 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      addNewTable: 'addNewTable',
-    }),
-    /**
-     * ОБработчик нажатия на кнопку добавления новой страницы
-     */
-    handleAddNewTable: function() {
-      this.addNewTable();
-    },
+    setPopupState: function(state) {
+      this.popupState = state;
+    }
   },
 };
 </script>

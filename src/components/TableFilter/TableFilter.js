@@ -37,7 +37,7 @@ export default {
      * @param {*} string - поисковая строка
      */
     removeWhitespace: function(string) {
-      return string.replace(/^\s+|\s+$/g, '');
+      return string.trim();
     },
 
     clearSearch: function() {
