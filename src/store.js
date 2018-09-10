@@ -7,7 +7,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     tablesBlueprint: {
-      isPending: false,
       values: [],
       errors: [],
       page: 1,
@@ -15,11 +14,17 @@ export default new Vuex.Store({
       meta: [],
     },
     tables: [],
+    isPending: false,
   },
   getters: {
     getTablesList: state => state.tables,
+    appIsPending: state => state.isPending,
   },
   mutations: {
+    addNewTable: state => {
+      state.isPending = true;
+    },
+
     addNewTableSuccess: (state, payload) => {
       let copy = Object.assign({}, state.tablesBlueprint);
 
@@ -27,10 +32,13 @@ export default new Vuex.Store({
       copy.isPending = false;
       copy.rows = Object.keys(payload[0]);
 
-      state.tables.push(copy)
+      state.tables.push(copy);
+      state.isPending = false;
     },
+
     addNewTableError: (state, payload) => {
       state.tables[state.tables.length - 1].error = payload;
+      state.isPending = false;
     },
 
     /**
@@ -106,9 +114,11 @@ export default new Vuex.Store({
      * на обработку в мутацию
      */
     addNewTable: context => {
+      context.commit('addNewTable');
+
       axios
         .get(
-          'http://www.filltext.com/?rows=32&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&adress={addressObject}&description={lorem|32};',
+          'http://www.filltext.com/?rows=1000&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&adress={addressObject}&description={lorem|32};',
         )
         .then(response => {
           context.commit('addNewTableSuccess', response.data);
