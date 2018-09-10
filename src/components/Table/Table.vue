@@ -1,10 +1,24 @@
 <template>
   <div class="table">
-    <table-filter 
-      :rows="tableData.rows" 
-      @search="handleSearch" 
-      @clear="clearSearch"
-    ></table-filter>
+    <popup @close="setPopupState(false)" v-if="popupState">
+      <copy-restore-table 
+        :cols="tableData.values"
+        :table="tableIndex"
+        @restored="dataRestored"
+      ></copy-restore-table>
+    </popup>
+
+    <div class="table__top">
+      <table-filter 
+        :rows="tableData.rows" 
+        @search="handleSearch" 
+        @clear="clearSearch"
+      ></table-filter>
+
+      <div class="table__controls">
+        <button @click.prevent="setPopupState(true)">Скопировать / восстановить</button>
+      </div>
+    </div>
 
     <table class="table__elem">
       <thead>
@@ -142,6 +156,11 @@
     }
   }
 
+  &__top {
+    display: flex;
+    justify-content: space-between;
+  }
+
   &__bottom {
     margin-top: 20px;
     display: flex;
@@ -149,4 +168,3 @@
   }
 }
 </style>
-

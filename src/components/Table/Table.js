@@ -1,12 +1,16 @@
 import { mapMutations } from 'vuex';
 import _ from 'lodash';
 import TableFilter from '../TableFilter/TableFilter.vue';
+import Popup from '../Popup/Popup.vue';
+import CopyRestoreTable from '../CopyRestoreTable/CopyRestoreTable.vue';
 
 export default {
   name: 'table-component',
 
   components: {
     TableFilter,
+    Popup,
+    CopyRestoreTable,
   },
 
   props: ['table', 'tableIndex'],
@@ -34,6 +38,7 @@ export default {
       },
       editStatus: false,
       isFiltered: false,
+      popupState: false,
     };
   },
 
@@ -107,7 +112,6 @@ export default {
      * @param {*} index -  название поля по которому происходит сортировка
      */
     handleSort: function(index) {
-      
       if (this.sorting.field != index) {
         this.sorting.field = index;
         this.sorting.direction = 'asc';
@@ -156,7 +160,7 @@ export default {
         table: this.tableIndex,
         column: column,
         element: blankElement,
-        page: this.tableData.page
+        page: this.tableData.page,
       };
 
       this.addNewColumn(indexes);
@@ -211,7 +215,7 @@ export default {
      */
     saveEdit: function(row, column, rowObj) {
       //Если фильтруем - найдём элемент в исходном массиве
-      if(this.isFiltered) {
+      if (this.isFiltered) {
         row = this.table.values.indexOf(rowObj);
       }
 
@@ -221,12 +225,13 @@ export default {
         column: column,
         newValue: this.edit.value,
       };
-      
+
       /**
        * look like костыль, что бы блюр не запускался после того как выстрелил keyup.enter и скрыл инпут
        * но лучшего решения на данный момент я придумать не могу
-       */ 
-      if(this.editStatus) {
+       */
+
+      if (this.editStatus) {
         this.saveNewValue(edited);
         this.clearEdit();
       }
@@ -240,14 +245,32 @@ export default {
       this.cleanTable(this.tableIndex);
     },
 
+    /**
+     * Удаление таблицы
+     */
     handleDeleteTable: function() {
       this.deleteTable(this.tableIndex);
     },
+
+    /**
+     * Управление попапом копирования / восстановления данных
+     */
+    setPopupState: function(state) {
+      this.popupState = state;
+    },
+
+    copyToTableData: function() {
+      let copy = Object.assign({}, this.table);
+      this.tableData = copy;
+    },
+
+    dataRestored: function() {
+      this.copyToTableData();
+      this.popupState = false;
+    }
   },
 
   mounted() {
-    let copy = Object.assign({}, this.table);
-
-    this.tableData = copy;
+    this.copyToTableData();
   },
 };

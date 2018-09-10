@@ -36,7 +36,7 @@ export default new Vuex.Store({
      * @param {*} payload - индексы строки, таблицы, пустой элемент и номер страницы
      */
     addNewColumn: (state, payload) => {
-      let index = payload.column + 1 + ((payload.page - 1) * 10);
+      let index = payload.column + 1 + (payload.page - 1) * 10;
       state.tables[payload.table].values.splice(index, 0, payload.element);
     },
 
@@ -62,7 +62,14 @@ export default new Vuex.Store({
      */
     deleteTable: (state, payload) => {
       state.tables.splice(payload, 1);
-    }
+    },
+
+    /**
+     * Восстановление таблицы
+     */
+    restoreTable: (state, payload) => {
+      state.tables[payload.table].values = JSON.parse(payload.values);
+    },
   },
   actions: {
     /**
