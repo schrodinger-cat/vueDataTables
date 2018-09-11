@@ -93,7 +93,8 @@
   </div>
 </template>
 
-<script src="./Table.js"></script>
+<script src="./Table.js">
+</script>
 
 <style lang="scss" scoped>
 .table {

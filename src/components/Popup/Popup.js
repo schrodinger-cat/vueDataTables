@@ -4,6 +4,6 @@ export default {
   methods: {
     handleClosePopup: function() {
       this.$emit('close');
-    }
-  }
-}
+    },
+  },
+};

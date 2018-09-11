@@ -9,7 +9,8 @@
   </div>
 </template>
 
-<script src="./CopyRestoreTable.js"></script>
+<script src="./CopyRestoreTable.js">
+</script>
 
 <style lang="scss">
 .textarea {
@@ -23,4 +24,3 @@
   color: red;
 }
 </style>
-

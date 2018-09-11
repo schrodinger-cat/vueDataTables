@@ -7,7 +7,8 @@
   </div>
 </template>
 
-<script src="./Popup.js"></script>
+<script src="./Popup.js">
+</script>
 
 <style lang="scss">
 .popup {
@@ -16,7 +17,7 @@
   height: 100%;
   top: 0;
   left: 0;
-  background-color: rgba(#3d3b3a, .7);
+  background-color: rgba(#3d3b3a, 0.7);
 
   &__elem {
     position: absolute;
@@ -35,7 +36,8 @@
     width: 15px;
     height: 15px;
     cursor: pointer;
-    &::before, &::after {
+    &::before,
+    &::after {
       content: '';
       position: absolute;
       width: 100%;
@@ -54,5 +56,3 @@
   }
 }
 </style>
-
-

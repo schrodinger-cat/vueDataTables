@@ -19,7 +19,8 @@
   </div>
 </template>
 
-<script src="./AddTable.js"></script>
+<script src="./AddTable.js">
+</script>
 
 <style lang="scss">
 .add {
@@ -36,4 +37,3 @@
   }
 }
 </style>
-
