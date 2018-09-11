@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import _ from 'lodash';
 
 Vue.use(Vuex);
 
@@ -78,7 +79,12 @@ export default new Vuex.Store({
      * Восстановление таблицы
      */
     restoreTable: (state, payload) => {
-      state.tables[payload.table].values = JSON.parse(payload.values);
+      let values = JSON.parse(payload.values);
+      if (!_.isEqual(state.tables[payload.table].rows, Object.keys(values[0]))) {
+        state.tables[payload.table].rows = Object.keys(values[0]);
+      }
+
+      state.tables[payload.table].values = values;
     },
 
     /**
@@ -118,7 +124,7 @@ export default new Vuex.Store({
 
       axios
         .get(
-          'http://www.filltext.com/?rows=1000&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&adress={addressObject}&description={lorem|32};',
+          'http://www.filltext.com/?rows=100&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&adress={addressObject}&description={lorem|32};',
         )
         .then(response => {
           context.commit('addNewTableSuccess', response.data);
