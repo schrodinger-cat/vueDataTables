@@ -52,7 +52,7 @@ export default {
 
     setCustomTh: function() {
       return this.table.meta[0] ? this.table.meta[0] : '';
-    }
+    },
   },
 
   methods: {
@@ -64,7 +64,7 @@ export default {
     }),
 
     setCustomTd: function(index) {
-      if(index % 2 == 0) {
+      if (index % 2 == 0) {
         return this.table.meta[1] ? this.table.meta[1] : '';
       } else {
         return this.table.meta[2] ? this.table.meta[2] : '';
@@ -135,12 +135,17 @@ export default {
         this.sorting.direction = nextDirection ? nextDirection : directions[0];
       }
 
-      this.tableData.values =
-        this.sorting.direction === 'normal'
-          ? this.table.values
-          : _.orderBy(this.tableData.values, index, this.sorting.direction);
+      //если список отфильтрован - значение для "нормального" состояния возьмём из this.sorting.initialState
+      if (this.sorting.direction === 'normal') {
+        this.tableData.values = this.isFiltered ? this.sorting.initialState : this.table.values;
+      } else {
+        this.tableData.values = _.orderBy(this.tableData.values, index, this.sorting.direction);
+      }
     },
 
+    /**
+     * Отфильтруем в зависимости от введенного значения и столбца
+     */
     handleSearch: function(search) {
       this.isFiltered = true;
 
@@ -149,6 +154,8 @@ export default {
         return val.includes(search.search);
       });
 
+      //сохраним состояние для сортировки
+      this.sorting.initialState = findedValues;
       this.tableData.values = findedValues;
     },
 
@@ -279,7 +286,7 @@ export default {
     dataRestored: function() {
       this.copyToTableData();
       this.popupState = false;
-    }
+    },
   },
 
   mounted() {
