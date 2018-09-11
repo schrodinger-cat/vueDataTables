@@ -130,6 +130,8 @@
   }
 
   &__td {
+    box-sizing: border-box;
+    height: 40px;
     padding: 8px;
     text-align: center;
   }
